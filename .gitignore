@@ -1,0 +1,9 @@
+
+# IDE
+.vscode/
+
+# Docs (confidential)
+docs/
+
+# Binary
+vwap
