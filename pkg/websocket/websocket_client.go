@@ -3,8 +3,6 @@ package websocket
 import (
 	"context"
 	"log"
-	"os"
-	"os/signal"
 	"sync"
 	"time"
 
@@ -35,10 +33,6 @@ func (c *wsClient) Start(ctx context.Context) error {
 	c.lock.Lock()
 	defer c.lock.Unlock()
 
-	// handle OS interrupts
-	interrupt := make(chan os.Signal, 1)
-	signal.Notify(interrupt, os.Interrupt)
-
 	// non-blocking message recieval from server
 	done := make(chan struct{})
 	go func() {
@@ -57,9 +51,6 @@ func (c *wsClient) Start(ctx context.Context) error {
 	// handle all scenarios
 	for {
 		select {
-		case <-ctx.Done():
-			log.Println("context cancelled")
-			return nil
 		case <-done:
 			log.Println("server terminated the connection")
 			return nil
@@ -71,8 +62,8 @@ func (c *wsClient) Start(ctx context.Context) error {
 				// log.Println("error sending message:", err)
 				// return
 			}
-		case <-interrupt: // process OS interrupts
-			log.Println("interrupt")
+		case <-ctx.Done(): // process OS interrupts (or context cancellation)
+			log.Println("interrupt (context cancelled)")
 
 			// Cleanly close the connection by sending a close message and then
 			// waiting (with timeout) for the server to close the connection.

@@ -61,7 +61,6 @@ func (v *vwapSocket) ComputeVWAP(ctx context.Context, slidingWindowSize int, pai
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("context cancelled")
 			return nil
 		case res := <-v.Recv():
 			msg, err := toMessage(res)
