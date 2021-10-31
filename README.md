@@ -1,4 +1,4 @@
-# Coinbase Volume-Weighted-Average-Price (VWAP)
+# Coinbase Realtime Volume-Weighted-Average-Price Engine
 
 A realtime VWAP (volume-weighted average price) calculation engine using the trading pair data from the [coinbase websocket](https://docs.pro.coinbase.com/#the-matches-channel).
 
