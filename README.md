@@ -47,7 +47,7 @@ The [main.go](main.go) file bootstraps the project by setting up (instantiating)
 
 Note: Due to the simplicity of the project, the default std logger is used to debug/display any output.
 
-## Assumptions
+### Assumptions
 
 - The `side` (buying or selling of trading pair) is ignored; the VWAP calculation only takes into account the volume and price of the trading pair
 - The VWAP calculation drops data points which lie outside the sliding window; this may skew the result of the VWAP if the data point(s) dropped have huge volume (relative to all the other data points in the sliding window)
