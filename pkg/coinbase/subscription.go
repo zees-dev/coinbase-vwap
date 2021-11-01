@@ -1,4 +1,4 @@
-package websocket
+package coinbase
 
 import (
 	"encoding/json"
@@ -7,12 +7,12 @@ import (
 // https://docs.cloud.coinbase.com/exchange/docs/overview
 const DefaultCoinbaseURL = "wss://ws-feed.exchange.coinbase.com"
 
-type subscriptionType string
+type SubscriptionType string
 
 const (
-	subscriptions subscriptionType = "subscriptions"
-	subscribe     subscriptionType = "subscribe"
-	unsubscribe   subscriptionType = "unsubscribe"
+	Subscriptions SubscriptionType = "subscriptions"
+	Subscribe     SubscriptionType = "subscribe"
+	UnSubscribe   SubscriptionType = "unsubscribe"
 )
 
 type supportedChannel string
@@ -31,15 +31,15 @@ type channel struct {
 	ProductIDs []string         `json:"product_ids"`
 }
 
-// subscription represents a request to subscribe or unsubscribe to a channel
+// Subscription represents a request to subscribe or unsubscribe to a channel
 // example subscribe: { "type": "subscribe", "channels": [{ "name": "matches", "product_ids": ["BTC-USD"] }] }
 // example unsubscribe: { "type": "unsubscribe", "channels": [{ "name": "matches", "product_ids": ["BTC-USD"] }] }
-type subscription struct {
-	Type     subscriptionType `json:"type"`
+type Subscription struct {
+	Type     SubscriptionType `json:"type"`
 	Channels []channel        `json:"channels"`
 }
 
-func (s subscription) Byte() []byte {
+func (s Subscription) Byte() []byte {
 	b, _ := json.Marshal(s)
 	return b
 }

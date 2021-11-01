@@ -1,4 +1,4 @@
-package websocket
+package coinbase
 
 import (
 	"context"
@@ -49,8 +49,8 @@ func (v *vwapSocket) ComputeVWAP(ctx context.Context, slidingWindowSize int, pai
 
 	// initial subscription - send once consumer is ready (websocket connection is established)
 	go func() {
-		initialSub := subscription{
-			Type:     subscribe,
+		initialSub := Subscription{
+			Type:     Subscribe,
 			Channels: []channel{{Name: matches, ProductIDs: pairs}},
 		}
 

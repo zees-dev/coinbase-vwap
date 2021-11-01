@@ -8,11 +8,12 @@ import (
 	"os/signal"
 	"strings"
 
+	"github.com/zees-dev/coinbase-vwap/pkg/coinbase"
 	"github.com/zees-dev/coinbase-vwap/pkg/websocket"
 )
 
 func main() {
-	coinbaseWSURL := flag.String("coinbase-ws-url", websocket.DefaultCoinbaseURL, "Coinbase Websockets API endpoint URL")
+	coinbaseWSURL := flag.String("coinbase-ws-url", coinbase.DefaultCoinbaseURL, "Coinbase Websockets API endpoint URL")
 	tradingPairs := flag.String("trading-pairs", "BTC-USD,ETH-USD,ETH-BTC", "Comma separated list of product_id pairs. e.g. BTC-USD,BTC-GBP,BTC-EUR,ETH-BTC")
 	windowSize := flag.Uint("window", 200, "No. of data points included in the sliding window")
 	flag.Parse()
@@ -41,7 +42,7 @@ func main() {
 		cancel()
 	}()
 
-	vwapSocket := websocket.NewVWAPSocket(os.Stdout)
+	vwapSocket := coinbase.NewVWAPSocket(os.Stdout)
 
 	// initiate non-blocking client-server websocket communication
 	go vwapSocket.ComputeVWAP(ctx, int(*windowSize), strings.Split(*tradingPairs, ",")...)

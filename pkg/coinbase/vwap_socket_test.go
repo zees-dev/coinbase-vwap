@@ -1,4 +1,4 @@
-package websocket
+package coinbase
 
 import (
 	"context"
@@ -7,11 +7,12 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/zees-dev/coinbase-vwap/pkg/websocket"
 )
 
 func Test_SatisfiesPubSuberInterface(t *testing.T) {
 	is := assert.New(t)
-	is.Implements((*PubSuber)(nil), NewVWAPSocket(os.Stdout))
+	is.Implements((*websocket.PubSuber)(nil), NewVWAPSocket(os.Stdout))
 }
 
 // testWriter is a test implementation of the io.Writer interface

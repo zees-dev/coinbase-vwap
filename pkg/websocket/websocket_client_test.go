@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/zees-dev/coinbase-vwap/pkg/coinbase"
 )
 
 type testPubSuber struct {
@@ -31,19 +32,19 @@ func Test_wsClient(t *testing.T) {
 	defer cancel()
 
 	pubSub := &testPubSuber{make(chan []byte), make(chan []byte)}
-	wsClient, err := NewWSClient(DefaultCoinbaseURL, pubSub)
+	wsClient, err := NewWSClient(coinbase.DefaultCoinbaseURL, pubSub)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// channel to capture initial subsciption response
-	subCh := make(chan subscription, 1)
+	subCh := make(chan coinbase.Subscription, 1)
 
 	// non-blocking subscribe to the websocket
 	go func() {
 		pubSub.Send() <- []byte(`{ "type": "subscribe", "channels": [{ "name": "matches", "product_ids": ["BTC-USD"] }] }`)
 
-		var sub subscription
+		var sub coinbase.Subscription
 		json.Unmarshal(<-pubSub.Recv(), &sub)
 		subCh <- sub
 		cancel()
@@ -54,6 +55,6 @@ func Test_wsClient(t *testing.T) {
 
 	// wait for the subscription and verify the response
 	sub := <-subCh
-	is.Equal(subscriptions, sub.Type)
+	is.Equal(coinbase.Subscriptions, sub.Type)
 	is.NotEmpty(sub.Channels)
 }
